@@ -1,0 +1,1 @@
+New-NetFirewallRule -Name 'NTP_Server_123UDP' -DisplayName 'NTP Server Port' -Description 'Allow Inbound Connections to NTP Server' -Profile Any -Direction Inbound -Action Allow -Protocol UDP -Program Any -LocalAddress Any -LocalPort 123
