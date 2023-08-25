@@ -1,0 +1,10 @@
+https://www.autohotkey.com/
+
+need the old version
+
+
+make a new file named sendClipboard.ahk and add
+
+; win + v
+#v::
+  SendRaw %clipboard%
