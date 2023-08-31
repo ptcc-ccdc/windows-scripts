@@ -8,3 +8,6 @@ make a new file named sendClipboard.ahk and add
 ; win + v
 #v::
   SendRaw %clipboard%
+
+
+after click the file and you should see it on your hotbar. use win+v to paste 
