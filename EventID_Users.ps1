@@ -13,7 +13,7 @@ $eventIDs = @(
 # Loop through each event ID and display the latest events with details
 foreach ($eventID in $eventIDs) {
     Write-Host "Showing detailed latest events for Event ID: $eventID"
-    Get-WinEvent -FilterHashtable @{LogName='Security'; ID=$eventID} -MaxEvents 5 | ForEach-Object {
+    Get-WinEvent -FilterHashtable @{LogName='Security'; ID=$eventID} -MaxEvents 25 | ForEach-Object {
         # Parse the event XML data
         $eventXml = [xml] $_.ToXml()
         $eventData = @{}
