@@ -14,15 +14,23 @@ $eventIDs = @(
 # Loop through each event ID and display the latest events with details
 foreach ($eventID in $eventIDs) {
     Write-Host "Showing detailed latest events for Event ID: $eventID"
-    Get-WinEvent -FilterHashtable @{LogName='Security'; ID=$eventID} -MaxEvents 25 | ForEach-Object {
-        # Create a custom object for each event to display detailed information
+    Get-WinEvent -FilterHashtable @{LogName='Security'; ID=$eventID} -MaxEvents 5 | ForEach-Object {
+        # Parse the event XML data
         $eventXml = [xml] $_.ToXml()
+        $eventData = @{}
+        foreach ($data in $eventXml.Event.EventData.Data) {
+            $eventData[$data.Name] = $data.'#text'
+        }
+        
+        # Create a custom object for each event to display detailed information
         [PSCustomObject] @{
             TimeCreated = $_.TimeCreated
             Id = $_.Id
-            User = $eventXml.Event.EventData.Data | Where-Object { $_.Name -eq 'TargetUserName' } | Select-Object -ExpandProperty '#text'
+            User = $eventData['TargetUserName']
             Computer = $eventXml.Event.System.Computer
             Message = $_.Message
+            ProcessName = if ($eventID -eq 4688) { $eventData['NewProcessName'] }
+            ProcessId = if ($eventID -eq 4688) { $eventData['NewProcessId'] }
         }
     } | Format-Table -AutoSize
     Write-Host "`n" # Newline for readability
@@ -32,15 +40,23 @@ foreach ($eventID in $eventIDs) {
 $specificEventID = Read-Host "Enter a specific Event ID to search for"
 if ($specificEventID -ne '') {
     Write-Host "Showing detailed latest events for Event ID: $specificEventID"
-    Get-WinEvent -FilterHashtable @{LogName='Security'; ID=$specificEventID} -MaxEvents 25 | ForEach-Object {
-        # Create a custom object for each event to display detailed information
+    Get-WinEvent -FilterHashtable @{LogName='Security'; ID=$specificEventID} -MaxEvents 5 | ForEach-Object {
+        # Parse the event XML data
         $eventXml = [xml] $_.ToXml()
+        $eventData = @{}
+        foreach ($data in $eventXml.Event.EventData.Data) {
+            $eventData[$data.Name] = $data.'#text'
+        }
+        
+        # Create a custom object for each event to display detailed information
         [PSCustomObject] @{
             TimeCreated = $_.TimeCreated
             Id = $_.Id
-            User = $eventXml.Event.EventData.Data | Where-Object { $_.Name -eq 'TargetUserName' } | Select-Object -ExpandProperty '#text'
+            User = $eventData['TargetUserName']
             Computer = $eventXml.Event.System.Computer
             Message = $_.Message
+            ProcessName = if ($specificEventID -eq 4688) { $eventData['NewProcessName'] }
+            ProcessId = if ($specificEventID -eq 4688) { $eventData['NewProcessId'] }
         }
     } | Format-Table -AutoSize
 }
