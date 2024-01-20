@@ -1,3 +1,5 @@
+# This script is for the local machine ONLY 
+
 # legal notice path
 $legalNoticePath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System"
 
