@@ -11,16 +11,36 @@ $eventIDs = @(
     4689  # A process has exited
 )
 
-# Loop through each event ID, display the latest events
+# Loop through each event ID and display the latest events with details
 foreach ($eventID in $eventIDs) {
-    Write-Host "Showing latest events for Event ID: $eventID"
-    Get-WinEvent -FilterHashtable @{LogName='Security'; ID=$eventID} -MaxEvents 25 | Format-Table -Property TimeCreated, Id, Message -AutoSize
+    Write-Host "Showing detailed latest events for Event ID: $eventID"
+    Get-WinEvent -FilterHashtable @{LogName='Security'; ID=$eventID} -MaxEvents 25 | ForEach-Object {
+        # Create a custom object for each event to display detailed information
+        $eventXml = [xml] $_.ToXml()
+        [PSCustomObject] @{
+            TimeCreated = $_.TimeCreated
+            Id = $_.Id
+            User = $eventXml.Event.EventData.Data | Where-Object { $_.Name -eq 'TargetUserName' } | Select-Object -ExpandProperty '#text'
+            Computer = $eventXml.Event.System.Computer
+            Message = $_.Message
+        }
+    } | Format-Table -AutoSize
     Write-Host "`n" # Newline for readability
 }
 
 # Prompt for a specific event ID
 $specificEventID = Read-Host "Enter a specific Event ID to search for"
 if ($specificEventID -ne '') {
-    Write-Host "Showing latest events for Event ID: $specificEventID"
-    Get-WinEvent -FilterHashtable @{LogName='Security'; ID=$specificEventID} -MaxEvents 25 | Format-Table -Property TimeCreated, Id, Message -AutoSize
+    Write-Host "Showing detailed latest events for Event ID: $specificEventID"
+    Get-WinEvent -FilterHashtable @{LogName='Security'; ID=$specificEventID} -MaxEvents 25 | ForEach-Object {
+        # Create a custom object for each event to display detailed information
+        $eventXml = [xml] $_.ToXml()
+        [PSCustomObject] @{
+            TimeCreated = $_.TimeCreated
+            Id = $_.Id
+            User = $eventXml.Event.EventData.Data | Where-Object { $_.Name -eq 'TargetUserName' } | Select-Object -ExpandProperty '#text'
+            Computer = $eventXml.Event.System.Computer
+            Message = $_.Message
+        }
+    } | Format-Table -AutoSize
 }
