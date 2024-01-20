@@ -6,7 +6,7 @@ $eventIDs = @(
     4722, # A user account was enabled
     4723, # An attempt was made to change an account's password
     4725, # A user account was disabled
-    4726, # A user account was deleted
+    4726  # A user account was deleted
 )
 
 # Loop through each event ID and display the latest events with details
