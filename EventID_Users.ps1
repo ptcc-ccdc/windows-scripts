@@ -25,8 +25,8 @@ foreach ($eventID in $eventIDs) {
         [PSCustomObject] @{
             TimeCreated = $_.TimeCreated
             EventID = $_.Id
-            SubjectUserName = $eventData['SubjectUserName']
             LogonProcessName = $eventData['LogonProcessName']
+            SubjectUserName = $eventData['SubjectUserName']
             SubjectDomainName = $eventData['SubjectDomainName']
             TargetUserName = $eventData['TargetUserName']
             TargetDomainName = $eventData['TargetDomainName']
