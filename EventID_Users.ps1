@@ -26,6 +26,7 @@ foreach ($eventID in $eventIDs) {
             TimeCreated = $_.TimeCreated
             EventID = $_.Id
             SubjectUserName = $eventData['SubjectUserName']
+            LogonProcessName = $eventData['LogonProcessName']
             SubjectDomainName = $eventData['SubjectDomainName']
             TargetUserName = $eventData['TargetUserName']
             TargetDomainName = $eventData['TargetDomainName']
