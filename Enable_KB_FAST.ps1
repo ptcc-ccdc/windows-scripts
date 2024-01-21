@@ -1,4 +1,4 @@
-# DO NOT USE...
+# DO NOT USE... error in line 3 '-KerberosFastAuthentication'
 # Create a new Authentication Policy with Kerberos FAST enabled
 $AuthPolicy = New-ADAuthenticationPolicy -Name "KerberosFASTPolicy" -Description "Enable Kerberos Armoring (FAST)" -KerberosFastAuthentication $true
 
