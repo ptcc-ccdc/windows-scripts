@@ -1,5 +1,5 @@
 # Create a new Authentication Policy with Kerberos FAST enabled
-$AuthPolicy = New-ADAuthenticationPolicy -Name "KerberosFASTPolicy" -Description "Enable Kerberos Armoring (FAST)" -KerberosFastArmoringEnabled $true
+$AuthPolicy = New-ADAuthenticationPolicy -Name "KerberosFASTPolicy" -Description "Enable Kerberos Armoring (FAST)" -KerberosFastAuthentication $true
 
 # Retrieve group members
 try {
