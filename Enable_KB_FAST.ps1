@@ -1,3 +1,4 @@
+# DO NOT USE...
 # Create a new Authentication Policy with Kerberos FAST enabled
 $AuthPolicy = New-ADAuthenticationPolicy -Name "KerberosFASTPolicy" -Description "Enable Kerberos Armoring (FAST)" -KerberosFastAuthentication $true
 
