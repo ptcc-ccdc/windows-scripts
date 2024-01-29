@@ -10,5 +10,19 @@ Start-Sleep -Seconds 60
 Write-Host "Turning on Windows Defender..."
 Set-MpPreference -DisableRealtimeMonitoring $false
 
+# Enable forced User Account Control (UAC)
+Write-Host "Enabling forced User Account Control (UAC)..."
+Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConsentPromptBehaviorAdmin" -Value 5
+Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLUA" -Value 1
+
+# Enable audit policy to log changes
+Write-Host "Enabling audit policy to log changes..."
+auditpol /set /subcategory:"Other System Events" /success:enable /failure:enable
+auditpol /set /subcategory:"Security System Extension" /success:enable /failure:enable
+auditpol /set /subcategory:"Security State Change" /success:enable /failure:enable
+
+Write-Host "Forced UAC enabled and auditing of changes enabled."
+
 #Immediatly starts a windows defender scan
 Start-MpScan -ScanType QuickScan
+
