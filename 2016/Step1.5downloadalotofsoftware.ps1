@@ -1,3 +1,4 @@
+New-Item -ItemType "directory" -Path "c:\downloads"
 Set-Location c:\downloads
 
 #Only allow downloads that use TLS 1.2 and TLS 1.3
