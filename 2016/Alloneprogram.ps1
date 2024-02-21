@@ -26,8 +26,9 @@ $IPAddressConfig = @{
     PrefixLength     = 24
 }
 $GatewayConfig = @{
-    NextHop          = $defaultGateway
+    IPAddress        = $defaultGateway
     InterfaceIndex   = $firstAdapter.InterfaceIndex
+    AddressFamily    = "IPv4"
 }
 
 # Set DNS server addresses
@@ -39,7 +40,7 @@ $DnsConfig = @{
 # Set IP configuration
 Set-NetIPAddress @IPAddressConfig
 Set-NetIPInterface -InterfaceIndex $firstAdapter.InterfaceIndex -Dhcp Disabled
-Set-NetIPInterface -InterfaceIndex $firstAdapter.InterfaceIndex -DefaultGateway $GatewayConfig
+Set-NetIPInterface @GatewayConfig
 Set-DnsClientServerAddress @DnsConfig
 
 Write-Host "Ip addresses and dns servers set for basic setup"
@@ -87,7 +88,8 @@ Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies
 #http://blog.dbsnet.fr/disable-netbios-with-powershell#:~:text=Disabling%20NetBIOS%20over%20TCP%2FIP,connection%2C%20then%20set%20NetbiosOptions%20%3D%202
 $key = "HKLM:SYSTEM\CurrentControlSet\services\NetBT\Parameters\Interfaces"
 Get-ChildItem $key | ForEach-Object { 
-    Write-Host("Modify $key\$($_.pschildname)")
+    Write-Host("Modify $key\$($_.pschildname)+")
+    Set-ItemProperty -Path "$key\$($_.pschildname)" -Name "NetbiosOptions" -Value 2
     $NetbiosOptions_Value = (Get-ItemProperty "$key\$($_.pschildname)").NetbiosOptions
     Write-Host("NetbiosOptions updated value is $NetbiosOptions_Value")
 }
@@ -121,3 +123,4 @@ Enable-NetFirewallRule -DisplayName "File and Printer Sharing (Echo Request - IC
 
 Write-Host "Inbound Rules absolutly fucked"
 
+# ------------------------------------------------------------
