@@ -5,5 +5,5 @@ Set-SmbServerConfiguration -EnableSMB1Protocol $false
 Disable-WindowsOptionalFeature -Online -FeatureName SMB1Protocol -NoRestart
 
 # Verify SMBv1 Disabled
-Get-SmbServerConfiguration | Select EnableSMB1Protocol
-Get-WindowsOptionalFeature -Online -FeatureName SMB1Protocol | Select State
+Get-SmbServerConfiguration | Select-Object EnableSMB1Protocol
+Get-WindowsOptionalFeature -Online -FeatureName SMB1Protocol | Select-Object State
